@@ -1,10 +1,10 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from src.attn import Attention
-from src.mlp import MLP
+from attn import Attention
+from mlp import MLP
 
-class Blocks(nn.Module):
+class Block(nn.Module):
     """
     Creating a reusable transformer block.
     """

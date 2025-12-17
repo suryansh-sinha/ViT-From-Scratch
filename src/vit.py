@@ -1,10 +1,10 @@
 import torch
 import torch.nn as nn
-from src.embedding import Embeddings
-from src.block import Blocks
+from embedding import Embeddings
+from block import Block
 
 class ViT(nn.Module):
-    def __init__(self, img_size=384, patch_size=16,
+    def __init__(self, img_size=224, patch_size=16,
                  in_channels=3, num_classes=100, embed_dim=768,
                  depth=12, num_heads=12, mlp_ratio=4,
                  qkv_bias=True, proj_dropout=0.0, attn_dropout=0.0):
@@ -19,11 +19,11 @@ class ViT(nn.Module):
         self.pos_drop = nn.Dropout(proj_dropout)
         
         self.blocks = nn.Sequential(*[
-            Blocks(embed_dim, num_heads, mlp_ratio, qkv_bias, proj_dropout, attn_dropout) \
+            Block(embed_dim, num_heads, mlp_ratio, qkv_bias, proj_dropout, attn_dropout) \
                 for _ in range(depth)
         ])
         
-        self.norm = nn.LayerNorm(embed_dim, eps=1e-6)
+        self.norm = nn.LayerNorm(embed_dim, eps=1e-12)
         self.head = nn.Linear(embed_dim, num_classes)   # Classifier head
         
         # Initialize weights

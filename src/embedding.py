@@ -21,6 +21,9 @@ class Embeddings(nn.Module):
         self.project = nn.Conv2d(channels, emb_dim, kernel_size=patch_size, stride=patch_size)
         
     def forward(self, x):
+        B, C, H, W = x.shape
+        assert H == self.img_s and W == self.img_s, f"Expected {self.img_s}x{self.img_s}, got {H}x{W}."
+
         # x -> (batch_size, num_channels, image_size, image_size)
         x = self.project(x)  # (batch_size, embedding_dim, patch_height, patch_width)
         # Flattening the last 2 dimensions into a single dimension.

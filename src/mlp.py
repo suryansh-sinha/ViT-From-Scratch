@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 class MLP(nn.Module):
     """
@@ -11,8 +10,9 @@ class MLP(nn.Module):
         
         self.l1 = nn.Linear(dim, hidden)
         self.l2 = nn.Linear(hidden, dim)
+        self.act = nn.GELU()
         self.dropout = nn.Dropout(p)
         
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.dropout(self.l2(self.dropout(F.gelu(self.l1(x)))))
+        x = self.dropout(self.l2(self.dropout(self.act(self.l1(x)))))
         return x
